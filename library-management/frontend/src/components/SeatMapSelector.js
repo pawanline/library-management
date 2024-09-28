@@ -1,7 +1,23 @@
-import React from 'react';
-import './SeatMap.css'; // Create a CSS file for styling
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './SeatMap.css'; // Import the CSS file for styling
 
-const SeatMap = ({ seats }) => {
+const SeatMapSelector = ({ selectedSeat, setSelectedSeat }) => {
+    const [seats, setSeats] = useState([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:5000/api/seats')
+            .then(response => {
+                const nonOccupiedSeats = response.data.filter(seat => !seat.isOccupied && !seat.is_occupied);
+                setSeats(nonOccupiedSeats);
+            })
+            .catch(error => console.error('Error fetching seats:', error));
+    }, []);
+
+    const handleSeatClick = (seatNumber) => {
+        setSelectedSeat(seatNumber);
+    };
+
     // Determine the number of rows and columns based on the number of seats
     const numRows = Math.ceil(seats.length / 10);
     const rows = Array.from({ length: numRows }, () => []);
@@ -22,7 +38,8 @@ const SeatMap = ({ seats }) => {
                     {row.map((seat, colIndex) => (
                         <div
                             key={colIndex}
-                            className={`seat ${seat.isOccupied || seat.is_occupied ? 'occupied' : 'available'}`}
+                            className={`seat ${selectedSeat === (seat.seatNumber || seat.seat_number) ? 'selected' : 'available'}`}
+                            onClick={() => handleSeatClick(seat.seatNumber || seat.seat_number)}
                         >
                             {seat.seatNumber || seat.seat_number || 'Empty'}
                         </div>
@@ -33,4 +50,4 @@ const SeatMap = ({ seats }) => {
     );
 };
 
-export default SeatMap;
+export default SeatMapSelector;

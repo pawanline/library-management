@@ -26,16 +26,34 @@ app.use('/api/fees', feeRoutes);
 
 
 // Add this route to handle POST requests for adding new students
-app.post('/api/students', (req, res) => {
-    const newStudent = new Student({
-      name: req.body.name,
-      email: req.body.email,
-    });
-  
-    newStudent.save()
-      .then(student => res.status(201).json(student))
-      .catch(err => res.status(400).json({ error: err.message }));
-  });
+app.post('/api/students', async (req, res) => {
+  try {
+      const { name, mobile, email, joiningDate, identityNo, preparingFor, type, seatNo, timeSlot, address } = req.body;
+      console.log('Request body:', req.body); // Log the request body
+
+      const newStudent = new Student({
+          name,
+          mobile,
+          email,
+          joiningDate,
+          identityNo,
+          preparingFor,
+          type,
+          seatNo,
+          timeSlot,
+          address
+      });
+      console.log('New student:', newStudent); // Log the new student object
+
+      const savedStudent = await newStudent.save();
+      res.status(201).json(savedStudent);
+  } catch (error) {
+      console.error('Error saving student:', error);
+      res.status(500).json({ error: 'Failed to save student' });
+  }
+});
+
+
   
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));

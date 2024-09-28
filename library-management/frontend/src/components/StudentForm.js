@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './StudentForm.css'; // Import the CSS file
+import SeatMapSelector from './SeatMapSelector'; // Import the SeatMapSelector component
 
 const StudentForm = () => {
     const [name, setName] = useState('');
@@ -14,9 +15,9 @@ const StudentForm = () => {
     const [timeSlot, setTimeSlot] = useState('');
     const [address, setAddress] = useState('');
 
-    const handleSubmit = (e) => {
+        const handleSubmit = (e) => {
         e.preventDefault();
-
+    
         const newStudent = {
             name,
             mobile,
@@ -29,7 +30,9 @@ const StudentForm = () => {
             timeSlot,
             address
         };
-
+    
+        console.log('Submitting student:', newStudent); // Log the request payload
+    
         axios.post('http://localhost:5000/api/students', newStudent)
             .then(response => {
                 console.log('Student added:', response.data);
@@ -116,13 +119,13 @@ const StudentForm = () => {
                         required
                     />
                 </div>
+                <SeatMapSelector selectedSeat={seatNo} setSelectedSeat={setSeatNo} />
                 <div className="form-group">
-                    <label>Seat No:</label>
+                    <label>Selected Seat No:</label>
                     <input
                         type="text"
                         value={seatNo}
-                        onChange={(e) => setSeatNo(e.target.value)}
-                        required
+                        readOnly
                     />
                 </div>
                 <div className="form-group">

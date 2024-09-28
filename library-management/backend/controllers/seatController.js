@@ -8,11 +8,13 @@ exports.getAllSeats = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+//Use this code to create a new seat
 
 exports.createSeat = async (req, res) => {
     const seat = new Seat({
         seat_number: req.body.seat_number,
         is_occupied: req.body.is_occupied,
+        occupantName: req.body.occupantName
     });
 
     try {

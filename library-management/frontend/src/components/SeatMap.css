@@ -9,20 +9,19 @@
 }
 
 .seat {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     margin: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 1px solid #000;
-    border-radius: 5px;
-}
-
-.seat.available {
-    background-color: #90ee90;
 }
 
 .seat.occupied {
-    background-color: #ffcccb;
+    background-color: red;
+}
+
+.seat.available {
+    background-color: green;
 }
