@@ -4,15 +4,20 @@ import './SeatMap.css'; // Import the CSS file for styling
 
 const SeatMapSelector = ({ selectedSeat, setSelectedSeat }) => {
     const [seats, setSeats] = useState([]);
+ 
+    const apiUrl = process.env.REACT_APP_DEBUG === 'true'
+    ? process.env.REACT_APP_API_URL
+    : process.env.REACT_APP_API_URL_LIVE;
 
-    useEffect(() => {
-        axios.get('http://localhost:5000/api/seats')
-            .then(response => {
-                const nonOccupiedSeats = response.data.filter(seat => !seat.isOccupied && !seat.is_occupied);
-                setSeats(nonOccupiedSeats);
-            })
-            .catch(error => console.error('Error fetching seats:', error));
-    }, []);
+useEffect(() => {
+    axios.get(`${apiUrl}/api/seats`)
+        .then(response => {
+            const nonOccupiedSeats = response.data.filter(seat => !seat.isOccupied && !seat.is_occupied);
+            setSeats(nonOccupiedSeats);
+        })
+        .catch(error => console.error('Error fetching seats:', error));
+}, [apiUrl]); // Include apiUrl in the dependency array
+
 
     const handleSeatClick = (seatNumber) => {
         setSelectedSeat(seatNumber);

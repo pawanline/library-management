@@ -3,12 +3,16 @@ import axios from 'axios';
 
 const FeeList = () => {
     const [fees, setFees] = useState([]);
+  
+    const apiUrl = process.env.REACT_APP_DEBUG === 'true'
+        ? process.env.REACT_APP_API_URL
+        : process.env.REACT_APP_API_URL_LIVE;
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/fees')
+        axios.get(`${apiUrl}/api/fees`)
             .then(response => setFees(response.data))
             .catch(error => console.error(error));
-    }, []);
+    }, [apiUrl]); // Include apiUrl in the dependency array
 
     return (
         <div>

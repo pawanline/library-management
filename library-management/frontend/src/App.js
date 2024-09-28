@@ -6,6 +6,10 @@ import StudentForm from './components/StudentForm';
 import axios from 'axios';
 
 const App = () => {
+    const apiUrl = process.env.REACT_APP_DEBUG === 'true'
+    ? process.env.REACT_APP_API_URL
+    : process.env.REACT_APP_API_URL_LIVE;
+
     const addTenSeats = async () => {
         const seatPromises = [];
         for (let i = 1; i <= 10; i++) {
@@ -14,7 +18,7 @@ const App = () => {
                 is_occupied: false,
                 occupantName: ""
             };
-            seatPromises.push(axios.post('http://localhost:5000/api/seats', seatData));
+            seatPromises.push(axios.post(`${apiUrl}/api/seats`, seatData));
         }
 
         try {

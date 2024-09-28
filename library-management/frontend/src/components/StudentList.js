@@ -4,14 +4,22 @@ import './StudentList.css'; // Import the CSS file for styling
 
 const StudentList = () => {
     const [students, setStudents] = useState([]);
+    const apiUrl = process.env.REACT_APP_DEBUG === 'true'
+    ? process.env.REACT_APP_API_URL
+    : process.env.REACT_APP_API_URL_LIVE;
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/students')
-            .then(response => {
+        const fetchStudents = async () => {
+            try {
+                const response = await axios.get(`${apiUrl}/api/students`);
                 setStudents(response.data);
-            })
-            .catch(error => console.error('Error fetching students:', error));
-    }, []);
+            } catch (error) {
+                console.error('Error fetching students:', error);
+            }
+        };
+
+        fetchStudents();
+    }, [apiUrl]); // Include apiUrl in the dependency array
 
     return (
         <div className="student-list">

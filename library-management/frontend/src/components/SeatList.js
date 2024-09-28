@@ -4,12 +4,22 @@ import SeatMap from './SeatMap';
 
 const SeatList = () => {
     const [seats, setSeats] = useState([]);
-
-    useEffect(() => {
-        axios.get('http://localhost:5000/api/seats')
-            .then(response => setSeats(response.data))
-            .catch(error => console.error(error));
-    }, []);
+    const apiUrl = process.env.REACT_APP_DEBUG === 'true'
+        ? process.env.REACT_APP_API_URL
+        : process.env.REACT_APP_API_URL_LIVE;
+   
+        useEffect(() => {
+            const fetchSeats = async () => {
+                try {
+                    const response = await axios.get(`${apiUrl}/api/seats`);
+                    setSeats(response.data);
+                } catch (error) {
+                    console.error('Error fetching seats:', error);
+                }
+            };
+    
+            fetchSeats();
+        }, [apiUrl]);
 
     return (
         <div>

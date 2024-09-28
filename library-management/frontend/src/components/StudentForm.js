@@ -17,7 +17,7 @@ const StudentForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+    
         const newStudent = {
             name,
             mobile,
@@ -30,10 +30,14 @@ const StudentForm = () => {
             timeSlot,
             address
         };
-
+    
         console.log('Submitting student:', newStudent); // Log the request payload
-
-        axios.post('http://localhost:5000/api/students', newStudent)
+    
+        const apiUrl = process.env.REACT_APP_DEBUG === 'true'
+            ? process.env.REACT_APP_API_URL
+            : process.env.REACT_APP_API_URL_LIVE;
+    
+        axios.post(`${apiUrl}/api/students`, newStudent)
             .then(response => {
                 console.log('Student added:', response.data);
                 setName('');
