@@ -15,9 +15,9 @@ const StudentForm = () => {
     const [timeSlot, setTimeSlot] = useState('');
     const [address, setAddress] = useState('');
 
-        const handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-    
+
         const newStudent = {
             name,
             mobile,
@@ -30,9 +30,9 @@ const StudentForm = () => {
             timeSlot,
             address
         };
-    
+
         console.log('Submitting student:', newStudent); // Log the request payload
-    
+
         axios.post('http://localhost:5000/api/students', newStudent)
             .then(response => {
                 console.log('Student added:', response.data);
